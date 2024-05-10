@@ -2,7 +2,7 @@ import DropDown from "./dropdown";
 import { useEffect, useState } from "react";
 import list from "../../test assets/output.json";
 
-console.log(list);
+// console.log(list);
 const newgnr = new Set(list);
 const temparr = Array.from(newgnr);
 
@@ -22,8 +22,8 @@ const Leftnav = ({ ontagchange }) => {
 
   useEffect(() => {
     let newtags = [];
-    console.log(ganre);
-    console.log(playlist);
+    // console.log(ganre);
+    // console.log(playlist);
     ganre.forEach((gnr) => {
       newtags.push(gnr.value);
     });

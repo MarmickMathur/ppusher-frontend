@@ -5,9 +5,9 @@ const Authbutton = ({ setuser, user }) => {
     console.log("hello");
     console.log(user);
     if (!user) {
-      const res = await axios.get("http://localhost:8000/");
-      console.log(res);
-      setuser(res);
+      window.location.href = "http://localhost:8000/auth/google";
+      // console.log(res);
+      // setuser(res);
     }
   };
 

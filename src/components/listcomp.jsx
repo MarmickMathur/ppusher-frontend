@@ -3,7 +3,7 @@ import Modal from "./modal";
 
 const Listitem = ({ index, song, action1 }) => {
   const [vis, setvis] = useState(false);
-  console.log(index);
+  // console.log(index);
 
   return (
     <>
