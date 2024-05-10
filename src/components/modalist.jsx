@@ -17,11 +17,13 @@ const Modalist = ({ song }) => {
   };
 
   const getres = async () => {
-    const res = await axios.get("");
-    setplaylist(res);
+    const res = await axios.get("http://localhost:8000/playlist");
+    // console.log(res);
+    // setplaylist(res);
   };
+
   const addres = async () => {
-    const res = await axios.post("apislink/playlist"); //using input value
+    const res = await axios.post("http://localhost:8000/playlist"); //using input value
   };
 
   useEffect(() => {
