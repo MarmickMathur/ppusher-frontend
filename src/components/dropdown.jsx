@@ -66,7 +66,13 @@ const DropDown = ({ options, selected, label, onSelectedChange }) => {
         >
           {label}
         </label>
-        <div style={{ display: dis }}>{ops}</div>
+
+        <div
+          className=" pl-6 max-h-64 overflow-scroll w-full"
+          style={{ display: dis }}
+        >
+          {ops}
+        </div>
       </div>
     </div>
   );

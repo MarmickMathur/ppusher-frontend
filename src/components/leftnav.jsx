@@ -1,15 +1,37 @@
 import DropDown from "./dropdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import list from "../../test assets/output.json";
 
-const options = [
+console.log(list);
+const newgnr = new Set(list);
+const temparr = Array.from(newgnr);
+
+let gnr = temparr.map((some) => {
+  return { label: some, value: some };
+});
+
+const artist = [
   { label: "the color red", value: "Red" },
   { label: "the color blue", value: "Blue" },
   { label: "the color green", value: "Green" },
 ];
 
-const Leftnav = () => {
-  const [libop, setlibop] = useState([]);
+const Leftnav = ({ ontagchange }) => {
+  const [ganre, setganre] = useState([]);
   const [playlist, setplaylist] = useState([]);
+
+  useEffect(() => {
+    let newtags = [];
+    console.log(ganre);
+    console.log(playlist);
+    ganre.forEach((gnr) => {
+      newtags.push(gnr.value);
+    });
+    playlist.forEach((ply) => {
+      newtags.push(ply.value);
+    });
+    ontagchange(newtags);
+  }, [ganre, playlist]);
 
   return (
     <>
@@ -22,17 +44,8 @@ const Leftnav = () => {
           <ul className="space-y-2">
             <li>
               <DropDown
-                key={"mylib"}
-                options={options}
-                selected={libop}
-                label={"mylib"}
-                onSelectedChange={setlibop}
-              />
-            </li>
-            <li>
-              <DropDown
                 key={"playlists"}
-                options={options}
+                options={artist}
                 selected={playlist}
                 label={"playlist"}
                 onSelectedChange={setplaylist}
@@ -40,11 +53,21 @@ const Leftnav = () => {
             </li>
             <li>
               <DropDown
-                key={"artist"}
-                options={options}
-                selected={playlist}
+                key={"mylib"}
+                options={gnr}
+                selected={ganre}
+                label={"genre"}
+                onSelectedChange={setganre}
+              />
+            </li>
+
+            <li>
+              <DropDown
+                key={"mylib"}
+                options={gnr}
+                selected={ganre}
                 label={"artist"}
-                onSelectedChange={setplaylist}
+                onSelectedChange={setganre}
               />
             </li>
           </ul>

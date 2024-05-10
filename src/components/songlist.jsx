@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Listitem from "./listcomp";
 
 const Songlist = ({ tags, onsongchange }) => {
   const [songs, setsongs] = useState([]);
@@ -53,15 +54,7 @@ const Songlist = ({ tags, onsongchange }) => {
 
   const songlist = songs.map((song, index) => {
     return (
-      <li
-        key={index}
-        onClick={() => {
-          onsongchange(song);
-        }}
-        className="w-full px-4 py-2 border-b border-gray-200  dark:border-gray-600"
-      >
-        {song.title}
-      </li>
+      <Listitem action1={onsongchange} index={index} key={index} song={song} />
     );
   });
 
