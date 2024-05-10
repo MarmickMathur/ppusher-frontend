@@ -1,32 +1,50 @@
-Problem:
-All the best the big music streaming platforms use central client servers to host their songs while this is a good approach but it has its cons namely cost and infrastructure. Also the servers have to constantly be scaled to match the user base
+# Peer to Peer Music Streaming Platform
 
-Solution:
-An App that uses a peer to peer file sharing protocol to solve some of the said issues and provide an alternative to the public
+## Problem
+Big music streaming platforms rely on central client servers to host their songs, which incurs high costs and requires constant infrastructure scaling to match user demand.
 
-Implementation:
+## Solution
+Develop an app that utilizes a peer-to-peer (P2P) file sharing protocol to address these issues and offer an alternative solution.
 
-    The idea is to use a peer to peer file sharing protocol that enables the app to work on a much simpler and light server.
-    The file will be split into chunks and then stored on different clients which
-    then serve as seeds to deliver the chunks upon a request.
-    A tracker will be used as a lightweight central server to keep track of the chunks.
-    Also it will scale itself due to the inherent nature of the protocol.
-    An A.I. model will be used to better the functionality of the protocol by choosing the best seed for chunk retrieval.
+## Implementation
 
-Tech Stack:
+- **Peer-to-Peer File Sharing Protocol**: Use a P2P file sharing protocol to simplify server infrastructure and distribute file chunks among users, who act as seeds for content delivery.
+- **Chunking and Seeding**: Divide files into chunks and distribute them among users, who serve as seeds for distributing chunks upon request.
+- **Tracker Server**: Employ a lightweight central server (tracker) to manage peers and track chunk information, ensuring efficient content delivery.
+- **AI Model**: Implement an AI model to optimize the protocol by selecting the best seeds for chunk retrieval.
 
-MongoDb
-Node
-Express
-React
-Redux
-Flask
-Tailwind
+## Tech Stack
 
-basic workflow:
-we divided the work flow into 3 sets one person is handeling each set.
-first set is regarding the ui where the ui and everything realted to fornt end will be handeled
+- **Frontend**:
+  - React
+  - Redux
+  - Tailwind CSS
 
-    second set is regarding the tracker server which handles and manages the peers and information retreival
+- **Backend**:
+  - Node.js
+  - Express.js
+  - Flask
 
-    third set is regarding the actual peer to peer code of the server where the files are divided and shared.
+- **Database**:
+  - MongoDB
+
+## Basic Workflow
+
+The workflow is divided into three main sets, each handled by a different team member:
+
+1. **UI Development**:
+   - Design and develop the user interface (UI) and all frontend components.
+
+2. **Tracker Server**:
+   - Develop and manage the tracker server responsible for managing peers and tracking information retrieval.
+
+3. **Peer-to-Peer Code**:
+   - Develop the peer-to-peer code responsible for file division and sharing.
+
+## Improvements
+
+1. **Security Considerations**: Ensure robust security measures are implemented to protect user data and prevent unauthorized access.
+2. **Scalability**: Implement strategies to ensure the system can scale effectively as the user base grows.
+3. **User Experience**: Continuously improve the user experience by gathering feedback and making iterative improvements to the app's design and functionality.
+4. **Monitoring and Analytics**: Incorporate monitoring and analytics tools to track system performance, user behavior, and trends.
+5. **Community Building**: Foster a community around the app by encouraging user engagement, providing support, and hosting events or challenges.
