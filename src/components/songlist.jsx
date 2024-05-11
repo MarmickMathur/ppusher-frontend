@@ -28,7 +28,7 @@ const Songlist = ({ tags, term, onsongchange }) => {
       let temp = [];
       for (let i = 0; i < tags.length; i++) {
         const { data } = await axios.get(
-          `https://ppushermusicsuggestion.onrender.com//autocomplete?query=${tags[i]}`
+          `https://ppushermusicsuggestion.onrender.com/autocomplete?query=${tags[i]}`
         );
         console.log(data);
 

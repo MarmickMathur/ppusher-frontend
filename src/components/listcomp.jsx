@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Modal from "./modal";
+import Modalist from "./modalist";
 
 const Listitem = ({ song, action1 }) => {
   const [vis, setvis] = useState(false);
@@ -24,7 +25,7 @@ const Listitem = ({ song, action1 }) => {
           >
             {"+"}
           </button>
-          <Modal vis={vis} setvis={setvis} />
+          <Modal vis={vis} setvis={setvis} comp={Modalist} />
         </div>
 
         <div
