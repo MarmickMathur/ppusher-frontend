@@ -1,11 +1,13 @@
-import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "../context/user";
 
-const Authbutton = ({ setuser, user }) => {
+const Authbutton = () => {
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+
   const gauth = async () => {
-    console.log("hello");
-    console.log(user);
-    if (!user) {
-      window.location.href = "http://localhost:8000/auth/google";
+    console.log(currentUser);
+    if (!currentUser) {
+      window.location.href = "https://ppusher-backend.onrender.com/auth/google";
       // console.log(res);
       // setuser(res);
     }

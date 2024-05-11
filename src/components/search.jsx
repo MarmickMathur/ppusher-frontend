@@ -28,9 +28,13 @@ const Search = ({ ontagchange }) => {
   return (
     <div>
       <form className="ui form">
-        <div className="field">
-          <label> enter the search term</label>
-          <input className="input" value={input} onChange={onInputChange} />
+        <div>
+          <label className="pr-10"> enter the search term</label>
+          <input
+            className="input border-2 border-black"
+            value={input}
+            onChange={onInputChange}
+          />
         </div>
       </form>
     </div>
