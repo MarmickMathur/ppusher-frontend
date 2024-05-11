@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import { easeInOut, motion, AnimatePresence } from "framer-motion";
 
 const DropDown = ({ options, selected, label, onSelectedChange }) => {
   const [open, setopen] = useState(false);
-  const [dis, setdis] = useState("none");
   const [ops, setops] = useState([]);
 
   useEffect(() => {
@@ -32,12 +32,12 @@ const DropDown = ({ options, selected, label, onSelectedChange }) => {
     setops(temp);
   }, [selected]);
 
-  useEffect(() => {
-    if (open) setdis("block");
-    else {
-      setdis("none");
-    }
-  }, [open]);
+  // useEffect(() => {
+  //   if (open) setdis("block");
+  //   else {
+  //     setdis("none");
+  //   }
+  // }, [open]);
 
   const changeops = (e) => {
     let temp = [];
@@ -66,13 +66,22 @@ const DropDown = ({ options, selected, label, onSelectedChange }) => {
         >
           {label}
         </label>
-
-        <div
-          className=" pl-6 max-h-64 overflow-scroll w-full"
-          style={{ display: dis }}
-        >
-          {ops}
-        </div>
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 0.5,
+                type: easeInOut,
+              }}
+              exit={{ opacity: 0 }}
+              className=" round pl-6 max-h-64 overflow-scroll w-full"
+            >
+              {ops}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

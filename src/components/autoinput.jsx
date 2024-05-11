@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const AutocompleteSearch = ({ oninputchange }) => {
+const AutocompleteSearch = ({ oninputchange, ind }) => {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState("");
   console.log(0);
@@ -33,7 +33,7 @@ const AutocompleteSearch = ({ oninputchange }) => {
       }
       const data = await response.json();
       console.log(data);
-      setSuggestions(data[0].split(" ")[0]);
+      setSuggestions(data[0].split(" ")[ind]);
     } catch (error) {
       console.error(error);
     }
