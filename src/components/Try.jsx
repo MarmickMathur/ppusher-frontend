@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 const AudioPlayer = ({ mergedBuffer }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [audioContext, setAudioContext] = useState(null);
   const [source, setSource] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [startTime, setStartTime] = useState(0);
 
   useEffect(() => {
-    // Initialize the audio context when the component mounts
     const context = new (window.AudioContext || window.webkitAudioContext)();
     setAudioContext(context);
 
-    // Clean up audio context when the component unmounts
     return () => {
       if (context.state !== 'closed') {
         context.close();
@@ -19,16 +17,32 @@ const AudioPlayer = ({ mergedBuffer }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!audioContext || !mergedBuffer) return;
+    if(isPlaying){
+      source.stop();
+      setStartTime(0);
+    }
+    const newSource = audioContext.createBufferSource();
+    newSource.buffer = mergedBuffer;
+    newSource.connect(audioContext.destination);
+    newSource.start(0, startTime);
+    setSource(newSource);
+    setIsPlaying(true);
+  }, [audioContext, mergedBuffer]);
+
   const togglePlayback = () => {
+    if (!audioContext || !mergedBuffer) return;
+
     if (isPlaying) {
       source.stop();
-      setStartTime(audioContext.currentTime); // Save the current playback position
+      setStartTime(audioContext.currentTime);
     } else {
-      const buffer = audioContext.createBufferSource();
-      buffer.buffer = mergedBuffer;
-      buffer.connect(audioContext.destination);
-      buffer.start(0, startTime); // Start playback from the saved position
-      setSource(buffer);
+      const newSource = audioContext.createBufferSource();
+      newSource.buffer = mergedBuffer;
+      newSource.connect(audioContext.destination);
+      newSource.start(0, startTime);
+      setSource(newSource);
     }
     setIsPlaying(!isPlaying);
   };
