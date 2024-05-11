@@ -10,6 +10,7 @@ import axios from "axios";
 function App() {
   const [tags, settags] = useState([]);
   const [song, setsong] = useState({});
+  const [term, seterm] = useState("");
 
   useEffect(() => {
     const getuser = async () => {
@@ -21,24 +22,31 @@ function App() {
         }
       );
       console.log(res);
+
       // console.log(res);
     };
     getuser();
   }, []);
+
+  useEffect(() => {
+    if (term != "") {
+      settags([]);
+    }
+  }, [term]);
 
   return (
     <>
       <UserProvider>
         <div className="w-screen h-screen">
           <div className="relative">
-            <Topnav ontagchange={settags} />
+            <Topnav ontagchange={settags} setterm={seterm} />
           </div>
           <div className="grid grid-cols-12 gap-0">
             <div className="col-span-3">
               <Leftnav ontagchange={settags} />
             </div>
             <div className="col-span-5">
-              <Songlist tags={tags} onsongchange={setsong} />
+              <Songlist tags={tags} term={term} onsongchange={setsong} />
             </div>
             <div className="col-span-4 flex align-middle">
               {/* <Musicplayer song={song} /> */}

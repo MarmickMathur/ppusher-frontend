@@ -2,46 +2,77 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Listitem from "./listcomp";
 
-const Songlist = ({ tags, onsongchange }) => {
+const Songlist = ({ tags, term, onsongchange }) => {
   const [songs, setsongs] = useState([]);
 
-  const search = async (term) => {
-    // console.log(1);
-    const res = await axios.get("https://en.wikipedia.org/w/api.php", {
-      params: {
-        action: "query",
-        list: "search",
-        origin: "*",
-        format: "json",
-        srsearch: term,
-      },
-    });
-
-    if (res.data.query) {
-      // setsongs(res.data.query.search);
-      return res.data.query.search;
+  const searchterm = async () => {
+    console.log(1);
+    if (term != "") {
+      const { data } = await axios.post(
+        `https://ppushermusicsuggestion.onrender.com/recommend`,
+        {
+          music_title: term,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setsongs(data.recommendations);
     }
-    return [];
   };
 
   const searchtags = async () => {
-    // console.log("fures");
-    let temp = [];
-    for (let i = 0; i < tags.length; i++) {
-      const res = await search(tags[i]);
-      //   console.log(res);
-      res.forEach((song) => {
-        temp.push(song);
-      });
-      // temp.concat(res);
+    if (tags.length != 0) {
+      let temp = [];
+      for (let i = 0; i < tags.length; i++) {
+        const { data } = await axios.get(
+          `https://ppushermusicsuggestion.onrender.com//autocomplete?query=${tags[i]}`
+        );
+        console.log(data);
+
+        if (data.length != 0) {
+          const res = await axios.post(
+            `https://ppushermusicsuggestion.onrender.com/recommend`,
+            {
+              music_title: data[0],
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          res.recommendations.forEach((song) => {
+            temp.push(song);
+          });
+        }
+
+        //   console.log(res);
+        // temp.concat(res);
+      }
+      // console.log("temp is", temp);
+      setsongs(temp);
     }
-    // console.log("temp is", temp);
-    setsongs(temp);
   };
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (tags.length) {
+      if (term != "") {
+        searchterm();
+        // search(tags[0]);
+      }
+    }, 500);
+
+    return /*this is returned as a clean up function*/ () => {
+      clearTimeout(timeoutId);
+    };
+  }, [term]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (tags.length != 0) {
         searchtags();
         // search(tags[0]);
       }
@@ -52,6 +83,7 @@ const Songlist = ({ tags, onsongchange }) => {
     };
   }, [tags]);
 
+  console.log(songs);
   const songlist = songs.map((song, index) => {
     return (
       <Listitem action1={onsongchange} index={index} key={index} song={song} />
