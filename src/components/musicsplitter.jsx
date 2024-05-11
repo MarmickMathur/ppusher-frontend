@@ -1,38 +1,16 @@
 import { useEffect, useState, useRef } from "react";
+import AudioPlayer from "./Try";
 
 const Peerplayer = (song) => {
   const [audioFile, setAudioFile] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [mergedfile, setmergedfile] = useState(null);
-  const sourceNode = useRef(null);
-  const audiocontext = useRef(
-    new (window.AudioContext || window.webkitAudioContext)()
-  );
+  const [mergedBuffer, setmergedbuffer] = useState(null);
 
-  useEffect(() => {
-    if (mergedfile != null) {
-      sourceNode.current = mergedfile;
-      // Connect the source node to the audio context destination
-      sourceNode.current.connect(audiocontext.current.destination);
-      // Start playback
-      sourceNode.current.start();
-    }
-  }, [mergedfile]);
+  const sourceNode = useRef(null);
 
   // Function to handle file selection
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setAudioFile(file);
-  };
-
-  const togglePlayPause = () => {
-    if (isPlaying) {
-      sourceNode.current.stop();
-      setIsPlaying(false);
-    } else {
-      sourceNode.current.start();
-      setIsPlaying(true);
-    }
   };
 
   async function splitAudio() {
@@ -42,11 +20,11 @@ const Peerplayer = (song) => {
       return;
     }
 
-    const audioContext = new AudioContext();
+    const audiocontext = new AudioContext();
     const fileReader = new FileReader();
 
     fileReader.onload = async function () {
-      const buffer = await audioContext.decodeAudioData(fileReader.result);
+      const buffer = await audiocontext.decodeAudioData(fileReader.result);
       const numberOfChunks = 5;
       const chunkSize = Math.ceil(buffer.length / numberOfChunks);
 
@@ -107,14 +85,14 @@ const Peerplayer = (song) => {
   }
 
   function mergeChunks(chunks) {
-    // const audioContext = new AudioContext();
+    const audiocontext = new AudioContext();
     const mergedLength = chunks.reduce(
       (totalLength, chunk) => totalLength + chunk.length,
       0
     );
     const sampleRate = chunks[0]?.sampleRate || 44100;
-    const mergedBuffer = audiocontext.createBuffer(1, mergedLength, sampleRate);
-    const mergedChannelData = mergedBuffer.getChannelData(0);
+    const mergedbuffer = audiocontext.createBuffer(1, mergedLength, sampleRate);
+    const mergedChannelData = mergedbuffer.getChannelData(0);
     let offset = 0;
     for (const chunk of chunks) {
       mergedChannelData.set(chunk, offset);
@@ -125,13 +103,13 @@ const Peerplayer = (song) => {
     const mergedSizeMB = (mergedLength * 4) / (1024 * 1024); // Each sample is 4 bytes
     console.log("Size of Merged Audio:", mergedSizeMB.toFixed(2), "MB");
 
+    setmergedbuffer(mergedbuffer);
+
     // Play the merged audio
-    // setmergedfile(audioContext);
-    const source = audiocontext.createBufferSource();
-    source.buffer = mergedBuffer;
-    setmergedfile(source);
+    // const source = audiocontext.createBufferSource();
+    // source.buffer = mergedBuffer;
     // sourceNode.current = source;
-    // source.connect(audioContext.destination);
+    // source.connect(audiocontext.destination);
     // source.start();
   }
 
@@ -155,19 +133,13 @@ const Peerplayer = (song) => {
     <>
       <div>
         <input type="file" accept="audio/*" onChange={handleFileChange} />
-        {mergedfile && (
-          <div>
-            <input type="file" accept="audio/*" onChange={handleFileChange} />
-            <button onClick={togglePlayPause}>
-              {isPlaying ? "Pause" : "Play"}
-            </button>
-          </div>
-        )}
         <button onClick={mergeAudio}>Merge Audio</button>
         <button onClick={splitAudio}>Split Audio</button>
+        <AudioPlayer mergedBuffer={mergedBuffer} />
       </div>
     </>
   );
 };
+
 
 export default Peerplayer;
