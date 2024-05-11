@@ -1,5 +1,6 @@
 import Search from "./search";
 import Authbutton from "./Login";
+import Addsong from "./songAdd";
 
 const Topnav = ({ setterm }) => {
   return (
@@ -9,6 +10,9 @@ const Topnav = ({ setterm }) => {
           <Search setterm={setterm} />
           <div className="bg-blue-900 text-white rounded-md p-3">
             <Authbutton />
+          </div>
+          <div className="bg-blue-900 text-white rounded-md p-3">
+            <Addsong />
           </div>
         </div>
       </nav>

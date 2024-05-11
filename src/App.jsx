@@ -6,27 +6,29 @@ import Musicsplitter from "./components/musicsplitter";
 // import Authbutton from "./components/Login";
 import { UserProvider } from "./context/user";
 import axios from "axios";
+import Addsong from "./components/songAdd";
+import Addsongform from "./components/addsongform";
 
 function App() {
   const [tags, settags] = useState([]);
   const [song, setsong] = useState({});
   const [term, seterm] = useState("");
 
-  useEffect(() => {
-    const getuser = async () => {
-      console.log("inside get user");
-      const res = await axios.get(
-        "https://ppusher-backend.onrender.com/auth/google",
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(res);
+  // useEffect(() => {
+  //   const getuser = async () => {
+  //     console.log("inside get user");
+  //     const res = await axios.get(
+  //       "https://ppusher-backend.onrender.com/auth/google",
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     );
+  //     console.log(res);
 
-      // console.log(res);
-    };
-    getuser();
-  }, []);
+  //     // console.log(res);
+  //   };
+  //   getuser();
+  // }, []);
 
   useEffect(() => {
     if (term != "") {
@@ -49,7 +51,6 @@ function App() {
               <Songlist tags={tags} term={term} onsongchange={setsong} />
             </div>
             <div className="col-span-4 flex align-middle">
-              {/* <Musicplayer song={song} /> */}
               <Musicsplitter song={song} />
             </div>
           </div>
